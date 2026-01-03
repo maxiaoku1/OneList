@@ -182,8 +182,6 @@
       box-shadow: 0 0 0 2px var(--focus);
     }
 
-    .view-toggle { display: flex; gap: 10px; }
-
     .list-header {
       display: grid;
       grid-template-columns: 1.4fr 0.8fr 0.6fr;
@@ -246,40 +244,6 @@
 
     .file-badge.is-muted { color: var(--muted); }
 
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 14px;
-    }
-
-    .card {
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-      background: var(--surface);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      min-height: 150px;
-      transition: transform var(--transition), border-color var(--transition), background-color var(--transition);
-    }
-
-    .card:hover { transform: translateY(-2px); border-color: var(--focus); }
-    .card:active { transform: translateY(0); background: var(--active); }
-
-    .card-head { display: flex; align-items: center; gap: 10px; justify-content: space-between; }
-    .card-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
-    .card-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-    .card-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
     .hidden { display: none !important; }
 
     .footer-note { color: var(--muted); font-size: 13px; text-align: center; }
@@ -302,8 +266,65 @@
       .top-actions { align-items: flex-start; }
       .search-box { min-width: 0; }
       .pill-button { width: auto; padding: 0 14px; font-size: 13px; }
-      .card-grid { grid-template-columns: 1fr; }
       .list-header, .list-row { padding: 12px; }
+    }
+
+    .preview-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 10;
+    }
+
+    .preview-shell {
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 18px;
+      width: min(960px, 95vw);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .preview-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--subtle-border);
+      gap: 10px;
+    }
+
+    .preview-title {
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .preview-body {
+      padding: 16px;
+      overflow: auto;
+      background: var(--surface);
+      display: flex;
+      justify-content: center;
+    }
+
+    .preview-body img,
+    .preview-body video,
+    .preview-body audio {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg);
     }
   </style>
 </head>
@@ -316,10 +337,7 @@
     </div>
     <div class="control-group">
       <button class="pill-button" id="themeToggle" type="button" aria-label="切换日夜模式"></button>
-      <div class="view-toggle">
-        <button class="pill-button" id="viewToggle" type="button" aria-label="切换视图"></button>
-        <a class="pill-button" id="backButton" href="#" aria-label="返回上级">上一级</a>
-      </div>
+      <a class="pill-button" id="backButton" href="#" aria-label="返回上级">上一级</a>
     </div>
   </header>
 
@@ -339,11 +357,9 @@
       </div>
       <div id="listBody"></div>
     </div>
-
-    <div id="cardContainer" class="card-grid hidden"></div>
   </div>
 
-  <div class="footer-note">黑白线框极简风 · 支持列表/卡片视图 & 日夜模式切换</div>
+  <div class="footer-note">黑白线框极简风 · 支持列表视图、在线预览与日夜模式切换</div>
 </div>
 
 <svg width="0" height="0" style="position:absolute">
@@ -383,8 +399,22 @@
     <symbol id="icon-arrow" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path d="M15 18l-6-6 6-6"></path>
     </symbol>
+    <symbol id="icon-play" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M10 9.5l5 2.5-5 2.5z"></path>
+    </symbol>
   </defs>
 </svg>
+
+<div id="previewLayer" class="preview-overlay hidden" role="dialog" aria-modal="true" aria-label="预览">
+  <div class="preview-shell">
+    <div class="preview-head">
+      <div class="preview-title" id="previewTitle"></div>
+      <button class="pill-button" id="previewClose" type="button">关闭</button>
+    </div>
+    <div class="preview-body" id="previewBody"></div>
+  </div>
+</div>
 
 <script>
   const RootPath = "{{.RootPath}}";
@@ -392,7 +422,6 @@
   const RawData = "{{.RawData}}";
 
   const state = {
-    view: localStorage.getItem('monominimalist-view') || 'list',
     theme: localStorage.getItem('monominimalist-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
     sortKey: 'name',
     reverse: false,
@@ -433,6 +462,14 @@
       if (group.keys.includes(ext)) return { label: group.label, icon: group.icon };
     }
     return { label: 'FILE', icon: 'icon-file' };
+  }
+
+  function mediaCategory(name) {
+    const ext = name.includes('.') ? name.split('.').pop().toLowerCase() : '';
+    if (['png','jpg','jpeg','gif','bmp','webp','svg'].includes(ext)) return 'image';
+    if (['mp4','mov','mkv','avi','flv','wmv','webm','m3u8'].includes(ext)) return 'video';
+    if (['mp3','flac','aac','ogg','wav','m4a'].includes(ext)) return 'audio';
+    return null;
   }
 
   function parseData() {
@@ -491,16 +528,6 @@
     localStorage.setItem('monominimalist-theme', theme);
   }
 
-  function applyView() {
-    const list = document.getElementById('listContainer');
-    const card = document.getElementById('cardContainer');
-    const isList = state.view === 'list';
-    list.classList.toggle('hidden', !isList);
-    card.classList.toggle('hidden', isList);
-    document.getElementById('viewToggle').textContent = isList ? '卡片视图' : '列表视图';
-    localStorage.setItem('monominimalist-view', state.view);
-  }
-
   function filterItems(items) {
     const q = state.query.trim().toLowerCase();
     if (!q) return items;
@@ -520,6 +547,7 @@
       row.className = 'list-row';
       const normalizedPath = CurrentPath === '/' ? '' : CurrentPath;
       const href = `${window.location.origin}${normalizedPath}/${encodeURIComponent(name)}`;
+      const previewCapable = mediaCategory(name) && type === 'file';
       row.innerHTML = `
         <div class="name-cell">
           ${svgIcon(icon)}
@@ -529,37 +557,12 @@
           </div>
         </div>
         <div class="time-cell meta">${item.date || '—'}</div>
-        <div class="size-cell meta">${type === 'folder' ? '—' : (item.size || '0 B')}</div>
+        <div class="size-cell meta">
+          ${type === 'folder' ? '—' : (item.size || '0 B')}
+          ${previewCapable ? `<button class="pill-button" data-preview="${href}" data-name="${encodeURIComponent(name)}">${svgIcon('icon-play')}预览</button>` : ''}
+        </div>
       `;
       body.appendChild(row);
-    });
-  }
-
-  function renderCards(items) {
-    const cardGrid = document.getElementById('cardContainer');
-    cardGrid.innerHTML = '';
-    items.forEach(item => {
-      const name = safeDecode(item.name || '');
-      const type = item['@type'];
-      const { label, icon } = badgeFor(name, type);
-      const normalizedPath = CurrentPath === '/' ? '' : CurrentPath;
-      const href = `${window.location.origin}${normalizedPath}/${encodeURIComponent(name)}`;
-      const card = document.createElement('a');
-      card.className = 'card';
-      card.href = href;
-      card.innerHTML = `
-        <div class="card-head">
-          <div class="card-title">${svgIcon(icon)}<span class="card-name">${name}</span></div>
-          <span class="file-badge ${type === 'folder' ? 'is-muted' : ''}">${label}</span>
-        </div>
-        <div class="card-meta">
-          <span>${item.date || '—'}</span>
-          <span>·</span>
-          <span>${type === 'folder' ? '—' : (item.size || '0 B')}</span>
-        </div>
-        <div class="card-meta">${type === 'folder' ? '文件夹' : '文件'}</div>
-      `;
-      cardGrid.appendChild(card);
     });
   }
 
@@ -570,18 +573,45 @@
     if (state.reverse) sorted.reverse();
     const filtered = filterItems(sorted);
     renderList(filtered);
-    renderCards(filtered);
+  }
+
+  function closePreview() {
+    document.getElementById('previewLayer').classList.add('hidden');
+    document.getElementById('previewBody').innerHTML = '';
+  }
+
+  function openPreview(name, url) {
+    const type = mediaCategory(name);
+    if (!type) return;
+    const previewBody = document.getElementById('previewBody');
+    const title = document.getElementById('previewTitle');
+    previewBody.innerHTML = '';
+    title.textContent = safeDecode(name);
+    if (type === 'image') {
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = name;
+      previewBody.appendChild(img);
+    } else if (type === 'video') {
+      const video = document.createElement('video');
+      video.controls = true;
+      video.src = url;
+      video.autoplay = true;
+      previewBody.appendChild(video);
+    } else if (type === 'audio') {
+      const audio = document.createElement('audio');
+      audio.controls = true;
+      audio.src = url;
+      audio.autoplay = true;
+      previewBody.appendChild(audio);
+    }
+    document.getElementById('previewLayer').classList.remove('hidden');
   }
 
   function attachEvents() {
     document.getElementById('themeToggle').addEventListener('click', () => {
       state.theme = state.theme === 'dark' ? 'light' : 'dark';
       applyTheme();
-    });
-
-    document.getElementById('viewToggle').addEventListener('click', () => {
-      state.view = state.view === 'list' ? 'card' : 'list';
-      applyView();
     });
 
     document.getElementById('searchInput').addEventListener('input', (e) => {
@@ -598,13 +628,27 @@
       });
     });
 
+    document.getElementById('listBody').addEventListener('click', (e) => {
+      const target = e.target.closest('button[data-preview]');
+      if (target) {
+        e.preventDefault();
+        const url = target.getAttribute('data-preview');
+        const name = decodeURIComponent(target.getAttribute('data-name'));
+        openPreview(name, url);
+      }
+    });
+
+    document.getElementById('previewClose').addEventListener('click', closePreview);
+    document.getElementById('previewLayer').addEventListener('click', (e) => {
+      if (e.target.id === 'previewLayer') closePreview();
+    });
+
     window.addEventListener('resize', renderAll);
   }
 
   (function init() {
     if (CurrentPath === '/') CurrentPath = '';
     applyTheme();
-    applyView();
     buildBreadcrumb();
     renderAll();
     attachEvents();
