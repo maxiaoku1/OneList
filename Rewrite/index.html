@@ -4,298 +4,500 @@
     <meta charset="UTF-8">
     <title>OneList</title>
     <style>
-        @font-face{
-            font-family: 'icomoon';
-            src : url("data:application/x-font-woff;charset=utf-8;base64,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") format('woff');
-            font-weight: normal;
-            font-style: normal;
-            font-display: block;
+        :root {
+            --bg: #f8f8f8;
+            --panel: #ffffff;
+            --text: #0f0f0f;
+            --muted: #4c4c4c;
+            --border: #dcdcdc;
+            --accent: #111111;
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
         }
-        [class^="icon-"], [class*=" icon-"] {
-            font-family: 'icomoon' !important;
-            speak: none;
-            font-style: normal;
-            font-weight: normal;
-            font-variant: normal;
-            text-transform: none;
-            line-height: 1;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+
+        body.dark {
+            --bg: #0c0c0c;
+            --panel: #131313;
+            --text: #f5f5f5;
+            --muted: #bcbcbc;
+            --border: #262626;
+            --accent: #f5f5f5;
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
-        .icon-home:before {
-            content: "\e900";
-        }
-        .icon-folder-open:before {
-            content: "\e930";
-        }
-        .icon-file-text2:before {
-            content: "\e926";
-        }
-        .icon-arrow-left2:before {
-            content: "\ea40";
-        }
+
+        * { box-sizing: border-box; }
+
         body {
-            background-color: rgb(247, 247, 249);
+            margin: 0;
+            font-family: "Inter", "SF Pro Display", system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s ease, color 0.3s ease;
         }
-        h1 {
-            text-align: center;
-            color: rgb(51, 51, 51);
-            font-size: 28px;
-            letter-spacing: 2px;
-            line-height: 64px;
+
+        a { color: inherit; text-decoration: none; }
+
+        .app {
+            max-width: 1100px;
+            margin: 32px auto 48px;
+            padding: 0 18px;
         }
-        h3 a:hover{
-            text-decoration: underline;
-        }
-        a {
-            text-decoration: none;
-            color: black;
-        }
-        table {
-            table-layout: fixed;
-            word-break: break-all;
-        }
-        th {
-            font-weight: bold;
-            text-align: right;
-        }
-        th:first-child {
-            text-align: left;
-            padding: 5px;
-            padding-left: 25px;
-            width: 68%;
-        }
-        th:nth-child(2),th:nth-child(3),td:nth-child(2),td:nth-child(3){
-            text-align: right;
-            width: 20%;
-        }
-        th:nth-child(3),td:nth-child(3){
-            width: 12%;
-        }
-        td {
-            font-weight: normal;
-            padding-top: 5px;
-            padding-bottom: 5px;
-        }
-        td:first-child{
+
+        .shell {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
             overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
-        td:first-child:hover {
-            overflow: visible;
-            text-overflow: clip;
-            font-weight: bold;
-            white-space: normal;
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
         }
-        .list-wrapper {
-            width: 80%;
-            margin: 0 auto;
-            margin-bottom: 40px;
-            position: relative;
-            box-shadow: 0 0 32px 0 rgba(0, 0, 0, 0.1);
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            font-size: 18px;
         }
-        .header-container {
-            margin: 0;
-            border: 0 none;
-            padding: 5px 50px 10px;
-            text-align: left;
-            font-weight: normal;
-            color: #000000;
-            background-color: #f7f7f9;
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            padding: 8px 14px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        .list-body-container {
-            left: 0;
-            overflow-x: hidden;
-            overflow-y: auto;
-            box-sizing: border-box;
-            background: white;
-            position: relative;
+
+        .pill:hover, .pill.active {
+            border-color: var(--text);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
         }
-        .list-table {
+
+        .controls {
+            margin-left: auto;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            background: rgba(0,0,0,0.02);
+        }
+
+        .search input {
             width: 100%;
-            padding: 15px;
-            border-spacing: 0;
-        }
-        .item:hover {
-            background-color: gainsboro;
-        }
-        #back{
-            position: absolute;
-            top: 35px;
-            right: 35px;
-        }
-        #search{
-            margin: 0;
-            border: 0 none;
-            border-radius:15px;
-            width: 100%;
-            padding: 5px 10px;
-            text-align: left;
-            font-size: inherit;
-            color: #000000;
-            background-color: white;
+            border: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 14px;
             outline: none;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .crumbs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .crumbs a {
+            padding: 6px 10px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+        }
+
+        .crumbs a:hover {
+            border-color: var(--border);
+            color: var(--text);
+        }
+
+        .grid {
+            padding: 8px 18px 18px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .grid.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        .grid.card-view {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+
+        .item {
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 16px;
+            background: var(--panel);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            transition: border 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .item:hover {
+            border-color: var(--text);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+        .item .meta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .item .title {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-weight: 600;
+            color: var(--text);
+            word-break: break-word;
+        }
+
+        .tag {
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            color: var(--text);
+            background: transparent;
+            flex-shrink: 0;
+        }
+
+        .stats {
+            display: flex;
+            gap: 12px;
+            color: var(--muted);
+            font-size: 12px;
+            flex-wrap: wrap;
+        }
+
+        .icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            background: rgba(0,0,0,0.02);
+            flex-shrink: 0;
+        }
+
+        .list-view .item {
+            flex-direction: row;
+        }
+
+        .card-view .item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .card-view .item .stats {
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .muted-button {
+            color: var(--muted);
+        }
+
+        .badge {
+            font-size: 11px;
+            color: var(--muted);
+            border-radius: 10px;
+            padding: 4px 10px;
+            border: 1px solid var(--border);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
     </style>
 </head>
 <body>
-<h1>
-    <span onclick="Goto(RootPath);">OneList</span>
-</h1>
-<div class="list-wrapper">
-    <div class="list-container">
-        <div class="header-container">
-            <h3>OneList Local Path</h3>
-            <span id="back" class="icon-arrow-left2" onclick="Goto(Back());"></span>
-            <div class="search-container">
-                <input id="search" oninput="Search();" placeholder="Search" />
+<div class="app">
+    <div class="shell">
+        <div class="topbar">
+            <div class="brand" onclick="Goto(RootPath);" style="cursor: pointer;">
+                <span class="icon" aria-hidden="true" id="brandIcon"></span>
+                <span>OneList</span>
+                <span class="badge">minimal</span>
+            </div>
+            <div class="controls">
+                <button class="pill" id="backBtn" aria-label="Back">
+                    <span class="icon" id="backIcon"></span>
+                    上一级
+                </button>
+                <button class="pill" id="themeToggle">
+                    <span class="icon" id="themeIcon"></span>
+                    日 / 夜
+                </button>
+                <button class="pill active" id="cardToggle">
+                    <span class="icon" id="cardIcon"></span>
+                    卡片
+                </button>
+                <button class="pill" id="listToggle">
+                    <span class="icon" id="listIcon"></span>
+                    列表
+                </button>
             </div>
         </div>
-        <div class="list-body-container">
-            <table class="list-table">
-                <tr class="list-title">
-                    <th onclick="View('name');">文件</th>
-                    <th onclick="View('date');">时间</th>
-                    <th onclick="View('size');">大小</th>
-                </tr>
-            </table>
+        <div class="toolbar">
+            <div class="crumbs" id="crumbs"></div>
+            <div class="search">
+                <span class="icon" id="searchIcon"></span>
+                <input id="search" oninput="Search();" placeholder="搜索文件 / 文件夹" aria-label="Search" />
+            </div>
         </div>
+        <div class="grid card-view" id="grid"></div>
     </div>
 </div>
 <script>
-    var RootPath = "{{.RootPath}}";
-    var CurrentPath = "{{.CurrentPath}}";
-    var RawData = "{{.RawData}}";
-    var Reverse = false;
-    var PageData = JSON.parse(window.atob(RawData));
-    var ArrayPath = new Array();
-    var ArrayFloder = new Array();
-    var ArrayFile = new Array();
+    const RootPath = "{{.RootPath}}";
+    let CurrentPath = "{{.CurrentPath}}";
+    const RawData = "{{.RawData}}";
+    let Reverse = false;
+    const PageData = JSON.parse(window.atob(RawData));
+    const ArrayPath = [];
+    const ArrayFloder = [];
+    const ArrayFile = [];
     if (CurrentPath === "/"){ CurrentPath = "" }
     for(let item in PageData){
-        if (item.indexOf("@") == 0) { continue }
-        if (PageData[item]['@type'] == 'file') {
+        if (item.indexOf("@") === 0) { continue }
+        if (PageData[item]['@type'] === 'file') {
             ArrayFile.push(PageData[item]);
-        } else if (PageData[item]['@type'] == 'folder') {
+        } else if (PageData[item]['@type'] === 'folder') {
             ArrayFloder.push(PageData[item]);
         }
     }
-    function Goto(thePath) {window.location.href = thePath;}
+
+    const icons = {
+        folder: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5h5.5L11 10h9v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7.5a2 2 0 0 1 2-2Z"/><path d="M2 11h20"/></svg>`,
+        file: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h6l5 5v13H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M13 3v5h5"/></svg>`,
+        home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"/><path d="M5 9v10h4v-5h6v5h4V9"/></svg>`,
+        back: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6 9 12l6 6"/><path d="M9 12h10"/></svg>`,
+        moon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.5A9 9 0 0 1 11.5 3 7 7 0 1 0 21 12.5Z"/></svg>`,
+        sun: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2m10-10h-2M4 12H2m15.66 6.66-1.42-1.42M7.76 7.76 6.34 6.34m0 11.32 1.42-1.42m10.1-10.1 1.42-1.42"/></svg>`,
+        cards: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="8" height="6" rx="1"/><rect x="3" y="13" width="8" height="6" rx="1"/><rect x="13" y="5" width="8" height="6" rx="1"/><rect x="13" y="13" width="8" height="6" rx="1"/></svg>`,
+        list: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="4" cy="6" r="1.5"/><circle cx="4" cy="12" r="1.5"/><circle cx="4" cy="18" r="1.5"/></svg>`,
+        search: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.2-4.2"/></svg>`
+    };
+
+    function paintIcon(target, name) {
+        const el = document.getElementById(target);
+        if (el) { el.innerHTML = icons[name]; }
+    }
+
+    paintIcon("brandIcon", "home");
+    paintIcon("backIcon", "back");
+    paintIcon("themeIcon", "moon");
+    paintIcon("cardIcon", "cards");
+    paintIcon("listIcon", "list");
+    paintIcon("searchIcon", "search");
+
+    function Goto(thePath) { window.location.href = thePath; }
+
     function SizeNum(Size) {
-        let dataArray = Size.split(" ", 2);
+        const dataArray = Size.split(" ", 2);
         let dataNum = 0;
         switch (dataArray[1]) {
-            case "B":
-                dataNum = Math.pow(2, 0) * dataArray[0];
-                break;
-            case "KB":
-                dataNum = Math.pow(2, 10) * dataArray[0];
-                break;
-            case "MB":
-                dataNum = Math.pow(2, 20) * dataArray[0];
-                break;
-            case "GB":
-                dataNum = Math.pow(2, 30) * dataArray[0];
-                break;
-            case "TB":
-                dataNum = Math.pow(2, 40) * dataArray[0];
-                break;
-            case "PB":
-                dataNum = Math.pow(2, 50) * dataArray[0];
-                break;
-            default:
-                dataNum = 0;
+            case "B": dataNum = Math.pow(2, 0) * dataArray[0]; break;
+            case "KB": dataNum = Math.pow(2, 10) * dataArray[0]; break;
+            case "MB": dataNum = Math.pow(2, 20) * dataArray[0]; break;
+            case "GB": dataNum = Math.pow(2, 30) * dataArray[0]; break;
+            case "TB": dataNum = Math.pow(2, 40) * dataArray[0]; break;
+            case "PB": dataNum = Math.pow(2, 50) * dataArray[0]; break;
+            default: dataNum = 0;
         }
         return dataNum;
     }
+
     function compare(property) {
         if (property === "size") {
             return function(a,b){
-                let value0 = SizeNum(a[property].toUpperCase());
-                let value1 = SizeNum(b[property].toUpperCase());
+                const value0 = SizeNum(a[property].toUpperCase());
+                const value1 = SizeNum(b[property].toUpperCase());
                 return value0 - value1;
             }
         } else {
             return function(a,b){
-                let value0 = a[property].toLowerCase();
-                let value1 = b[property].toLowerCase();
+                const value0 = a[property].toLowerCase();
+                const value1 = b[property].toLowerCase();
                 return value0.localeCompare(value1);
             }
         }
     }
-    function Clear() {
-        let ClassList = new Array("item");
-        for(let item in ClassList){
-            let Elem = document.getElementsByClassName(ClassList[item]);
-            for(let i = Elem.length-1; i >= 0 ; i--) {
-                Elem[i].parentNode.removeChild(Elem[i]);
-            }
-        }
-        let ElemH3 = document.getElementsByTagName("h3")[0];
-        let newH3 = document.createElement("h3");
-        let localPath = CurrentPath.trim().replace(/^\//, "").replace(/\/$/, "");
-        let localHtmlArray = new Array();
-        localHtmlArray.push("<a href='//" + window.location.host + RootPath + "'>" + '<span class="icon-home"></span>' + "</a>");
+
+    function buildCrumbs() {
+        const crumbs = document.getElementById("crumbs");
+        crumbs.innerHTML = "";
+        const localPath = CurrentPath.trim().replace(/^\//, "").replace(/\/$/, "");
+        const localHtmlArray = [];
+        localHtmlArray.push({ label: "Home", href: '//' + window.location.host + RootPath, icon: icons.home });
         if (localPath !== "" ){
-            let localPathArray = localPath.split("/");
+            const localPathArray = localPath.split("/");
             let localHref = "";
             for(let j=0; j<localPathArray.length; j++){
                 localHref += "/" + localPathArray[j];
                 if (j === 0 && RootPath !== "/"){ continue }
-                localHtmlArray.push("<a href='//" + window.location.host + localHref + "'>" + localPathArray[j] + "</a>");
+                localHtmlArray.push({ label: localPathArray[j], href: '//' + window.location.host + localHref });
             }
         }
-        ElemH3.innerHTML = localHtmlArray.join(" / ");
-        ArrayPath = localHtmlArray;
+        ArrayPath.splice(0, ArrayPath.length, ...localHtmlArray.map(item => item.href));
+        localHtmlArray.forEach((item) => {
+            const link = document.createElement("a");
+            link.href = item.href;
+            link.innerHTML = item.icon ? `<span class="icon muted-button">${item.icon}</span>` : item.label;
+            link.appendChild(document.createTextNode(item.icon ? ` ${item.label}` : ""));
+            crumbs.appendChild(link);
+        });
     }
+
     function Back() {
-        let Num = ArrayPath.length - 1;
+        const Num = ArrayPath.length - 1;
         let ElemNum = 0;
-        let ElemBack = document.createElement("div");
         if (Num > 0){ElemNum = Num - 1;}
-        ElemBack.innerHTML = ArrayPath[ElemNum];
-        return ElemBack.childNodes[0].href
+        return ArrayPath[ElemNum];
     }
-    function Search() {
-        let searchVal = document.getElementById("search").value;
-        if (searchVal === undefined){ return; } else { searchVal = searchVal.toString().toLowerCase(); }
-        let ShowArray = document.getElementsByClassName("item");
-        for(i=0; i<ShowArray.length; i++){
-            let FocusElem = ShowArray[i].children[0].getElementsByTagName("a");
-            if (FocusElem !== undefined && FocusElem.length === 1){
-                let newAttr = "table-row";
-                if (FocusElem[0].textContent.toLowerCase().indexOf(searchVal) < 0) { newAttr = "none"; }
-                ShowArray[i].style.display = newAttr;
-            }
+
+    function normalizeTag(name, isFolder) {
+        if (isFolder) return "DIR";
+        const ext = name.split(".").pop().toLowerCase();
+        const map = {
+            img: ["png","jpg","jpeg","gif","bmp","webp","svg","heic","avif"],
+            vid: ["mp4","mov","avi","mkv","webm","flv"],
+            pdf: ["pdf"],
+            doc: ["doc","docx","txt","md","rtf","pages"],
+            xls: ["xls","xlsx","csv","numbers"],
+            ppt: ["ppt","pptx","key"],
+            zip: ["zip","rar","7z","tar","gz"],
+            aud: ["mp3","wav","aac","flac","m4a","ogg"],
+            code: ["js","ts","jsx","tsx","html","css","json","go","py","rb","php","java","c","cpp","rs","sh","sql","yml","yaml"]
+        };
+        for (let key in map) {
+            if (map[key].includes(ext)) { return key.toUpperCase(); }
         }
+        return ext ? ext.toUpperCase() : "FILE";
     }
-    function View(Property) {
+
+    function renderItems(Property) {
         ArrayFloder.sort(compare(Property));
         ArrayFile.sort(compare(Property));
         if (Reverse) {
             ArrayFloder.reverse();
             ArrayFile.reverse();
         }
-        Reverse = !(Reverse);
-        Clear();
-        let Elem = document.getElementsByClassName("list-table")[0];
-        let ArrayItem = ArrayFloder.concat(ArrayFile);
-        for(let item in ArrayItem){
-            let newChild = document.createElement("tr");
-            let iconHtml = "";
-            if (ArrayItem[item]['@type'] == 'folder') {
-                iconHtml = '<span class="icon-folder-open"> </span>';
-            } else if (ArrayItem[item]['@type'] == 'file') {
-                iconHtml = '<span class="icon-file-text2"> </span>';
-            } else { continue }
-            newChild.setAttribute('class', 'item');
-            let ItemName = decodeURIComponent(ArrayItem[item]['name']);
-            newChild.innerHTML = "<td class=\"list-data\">" + iconHtml + "<a href='//" + window.location.host + CurrentPath + "/" + ItemName +"'>" + ItemName + "</a></td><td class=\"list-data\">" + ArrayItem[item]['date'] + "</td><td class=\"list-data\">" + ArrayItem[item]['size'] + "</td>";
-            Elem.lastChild.appendChild(newChild);
+        Reverse = !Reverse;
+        buildCrumbs();
+        const grid = document.getElementById("grid");
+        grid.innerHTML = "";
+        const ArrayItem = ArrayFloder.concat(ArrayFile);
+        ArrayItem.forEach(item => {
+            const wrapper = document.createElement("div");
+            wrapper.className = "item";
+            const isFolder = item['@type'] === 'folder';
+            const icon = document.createElement("span");
+            icon.className = "icon";
+            icon.innerHTML = isFolder ? icons.folder : icons.file;
+            const meta = document.createElement("div");
+            meta.className = "meta";
+            const title = document.createElement("div");
+            title.className = "title";
+            const ItemName = decodeURIComponent(item['name']);
+            const link = document.createElement("a");
+            link.href = '//' + window.location.host + CurrentPath + "/" + ItemName;
+            link.textContent = ItemName;
+            const tag = document.createElement("span");
+            tag.className = "tag";
+            tag.textContent = normalizeTag(ItemName, isFolder);
+            title.appendChild(link);
+            title.appendChild(tag);
+            const stats = document.createElement("div");
+            stats.className = "stats";
+            stats.innerHTML = `<span>${item['date']}</span><span>${item['size']}</span>`;
+            meta.appendChild(title);
+            meta.appendChild(stats);
+            wrapper.appendChild(icon);
+            wrapper.appendChild(meta);
+            wrapper.setAttribute("data-name", ItemName.toLowerCase());
+            grid.appendChild(wrapper);
+        });
+    }
+
+    function Search() {
+        let searchVal = document.getElementById("search").value;
+        if (searchVal === undefined){ return; } else { searchVal = searchVal.toString().toLowerCase(); }
+        const ShowArray = document.getElementsByClassName("item");
+        for(let i=0; i<ShowArray.length; i++){
+            const item = ShowArray[i];
+            const name = item.getAttribute("data-name") || "";
+            const newAttr = name.indexOf(searchVal) < 0 ? "none" : "flex";
+            item.style.display = newAttr;
         }
     }
-    window.onload = View("name");
+
+    function toggleView(view) {
+        const grid = document.getElementById("grid");
+        grid.classList.remove("card-view","list-view");
+        grid.classList.add(view);
+        document.getElementById("cardToggle").classList.toggle("active", view === "card-view");
+        document.getElementById("listToggle").classList.toggle("active", view === "list-view");
+    }
+
+    function toggleTheme() {
+        const isDark = document.body.classList.toggle("dark");
+        paintIcon("themeIcon", isDark ? "sun" : "moon");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+    }
+
+    document.getElementById("backBtn").addEventListener("click", () => Goto(Back()));
+    document.getElementById("cardToggle").addEventListener("click", () => toggleView("card-view"));
+    document.getElementById("listToggle").addEventListener("click", () => toggleView("list-view"));
+    document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark");
+        paintIcon("themeIcon", "sun");
+    }
+
+    renderItems("name");
 </script>
 </body>
 </html>
