@@ -18,7 +18,7 @@
       --focus: #1c1c1c;
       --disabled: #bfbfbf;
       --shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
-      --pill-height: 44px;
+      --pill-height: 42px;
       --radius-pill: 999px;
       --radius-lg: 18px;
       --gap: 16px;
@@ -100,7 +100,7 @@
       gap: 8px;
       height: var(--pill-height);
       min-width: 44px;
-      padding: 0 18px;
+      padding: 0 16px;
       border-radius: var(--radius-pill);
       border: 1px solid var(--border);
       background: var(--surface);
@@ -124,6 +124,12 @@
       color: var(--disabled);
       border-color: var(--subtle-border);
       background: var(--hover);
+    }
+
+    .pill-button.is-compact {
+      height: 38px;
+      padding: 0 12px;
+      gap: 6px;
     }
 
     .surface {
@@ -161,11 +167,21 @@
       flex: 1;
       min-width: 260px;
       max-width: 480px;
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      pointer-events: none;
     }
 
     .search-input {
-      height: var(--pill-height);
-      padding: 0 16px;
+      height: 40px;
+      padding: 0 14px 0 42px;
       border-radius: var(--radius-pill);
       border: 1px solid var(--border);
       background: var(--surface);
@@ -175,7 +191,7 @@
       transition: border-color var(--transition), box-shadow var(--transition), background-color var(--transition);
     }
 
-    .search-input:hover { background: var(--hover); }
+    .search-input:hover { background: var(--hover); border-color: var(--subtle-border); }
     .search-input:focus-visible {
       outline: none;
       border-color: var(--focus);
@@ -265,7 +281,7 @@
       .app-header { gap: 10px; }
       .top-actions { align-items: flex-start; }
       .search-box { min-width: 0; }
-      .pill-button { width: auto; padding: 0 14px; font-size: 13px; }
+      .pill-button { width: auto; padding: 0 12px; font-size: 13px; }
       .list-header, .list-row { padding: 12px; }
     }
 
@@ -327,6 +343,7 @@
       background: var(--bg);
     }
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/dplayer/dist/DPlayer.min.css">
 </head>
 <body data-theme="light">
 <div class="app-shell">
@@ -342,12 +359,13 @@
   </header>
 
   <div class="surface">
-    <div class="top-actions">
-      <div class="breadcrumbs" id="breadcrumbs"></div>
-      <div class="search-box">
-        <input id="searchInput" class="search-input" type="search" placeholder="搜索文件/文件夹" aria-label="搜索" />
+      <div class="top-actions">
+        <div class="breadcrumbs" id="breadcrumbs"></div>
+        <div class="search-box">
+          <span class="search-icon"><svg class="icon-inline" aria-hidden="true"><use xlink:href="#icon-search"></use></svg></span>
+          <input id="searchInput" class="search-input" type="search" placeholder="搜索文件/文件夹" aria-label="搜索" />
+        </div>
       </div>
-    </div>
 
     <div id="listContainer" class="list-view-wrapper">
       <div class="list-header" id="listHeader">
@@ -403,6 +421,10 @@
       <circle cx="12" cy="12" r="9"></circle>
       <path d="M10 9.5l5 2.5-5 2.5z"></path>
     </symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="6.5"></circle>
+      <path d="M16.5 16.5L20 20"></path>
+    </symbol>
   </defs>
 </svg>
 
@@ -416,10 +438,12 @@
   </div>
 </div>
 
+<script src="https://unpkg.com/dplayer/dist/DPlayer.min.js"></script>
 <script>
   const RootPath = "{{.RootPath}}";
   let CurrentPath = "{{.CurrentPath}}";
   const RawData = "{{.RawData}}";
+  let videoPlayer = null;
 
   const state = {
     theme: localStorage.getItem('monominimalist-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
@@ -559,7 +583,7 @@
         <div class="time-cell meta">${item.date || '—'}</div>
         <div class="size-cell meta">
           ${type === 'folder' ? '—' : (item.size || '0 B')}
-          ${previewCapable ? `<button class="pill-button" data-preview="${href}" data-name="${encodeURIComponent(name)}">${svgIcon('icon-play')}预览</button>` : ''}
+          ${previewCapable ? `<button class="pill-button is-compact" data-preview="${href}" data-name="${encodeURIComponent(name)}" aria-label="预览">${svgIcon('icon-play')}</button>` : ''}
         </div>
       `;
       body.appendChild(row);
@@ -576,6 +600,10 @@
   }
 
   function closePreview() {
+    if (videoPlayer) {
+      videoPlayer.destroy();
+      videoPlayer = null;
+    }
     document.getElementById('previewLayer').classList.add('hidden');
     document.getElementById('previewBody').innerHTML = '';
   }
@@ -583,6 +611,10 @@
   function openPreview(name, url) {
     const type = mediaCategory(name);
     if (!type) return;
+    if (videoPlayer) {
+      videoPlayer.destroy();
+      videoPlayer = null;
+    }
     const previewBody = document.getElementById('previewBody');
     const title = document.getElementById('previewTitle');
     previewBody.innerHTML = '';
@@ -593,11 +625,18 @@
       img.alt = name;
       previewBody.appendChild(img);
     } else if (type === 'video') {
-      const video = document.createElement('video');
-      video.controls = true;
-      video.src = url;
-      video.autoplay = true;
-      previewBody.appendChild(video);
+      const box = document.createElement('div');
+      box.id = 'previewPlayer';
+      box.style.width = '100%';
+      box.style.maxWidth = '100%';
+      box.style.minHeight = '360px';
+      previewBody.appendChild(box);
+      videoPlayer = new DPlayer({
+        container: box,
+        autoplay: true,
+        theme: getComputedStyle(document.body).getPropertyValue('--text'),
+        video: { url }
+      });
     } else if (type === 'audio') {
       const audio = document.createElement('audio');
       audio.controls = true;
