@@ -296,6 +296,10 @@
             padding: 6px 10px;
         }
 
+        .preview-placeholder {
+            justify-self: flex-end;
+        }
+
         .preview-layer {
             position: fixed;
             inset: 0;
@@ -591,6 +595,7 @@
         filtered.forEach(item => {
             const isFolder = item['@type'] === 'folder';
             const type = isFolder ? 'folder' : getFileType(item.name);
+            const previewable = isPreviewable(type);
             const row = document.createElement('div');
             row.className = 'file-row';
 
@@ -616,18 +621,22 @@
             size.className = 'size';
             size.textContent = isFolder ? '--' : (item.size || '0 B');
 
-            const previewBtn = document.createElement('button');
-            previewBtn.className = 'pill preview-pill preview-toggle';
-            previewBtn.type = 'button';
-            previewBtn.innerHTML = '<span class="material-icons-round">visibility</span>预览';
-
             row.appendChild(meta);
             row.appendChild(time);
             row.appendChild(size);
-            row.appendChild(previewBtn);
-
-            row.addEventListener('click', (e) => handleOpen(e, item, type));
-            previewBtn.addEventListener('click', (e) => handlePreview(e, item, type));
+            if (previewable) {
+                const previewBtn = document.createElement('button');
+                previewBtn.className = 'pill preview-pill preview-toggle';
+                previewBtn.type = 'button';
+                previewBtn.innerHTML = '<span class="material-icons-round">visibility</span>预览';
+                row.appendChild(previewBtn);
+                row.addEventListener('click', (e) => handleOpen(e, item, type));
+                previewBtn.addEventListener('click', (e) => handlePreview(e, item, type));
+            } else {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'preview-placeholder';
+                row.appendChild(placeholder);
+            }
 
             list.appendChild(row);
         });
