@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <title>MonoMinimalist - OneList</title>
+  <style>
+    :root {
+      --bg: #f7f7f7;
+      --surface: #ffffff;
+      --text: #0f0f0f;
+      --muted: #5a5a5a;
+      --border: #d8d8d8;
+      --subtle-border: #e5e5e5;
+      --hover: #ededed;
+      --active: #dcdcdc;
+      --focus: #1c1c1c;
+      --disabled: #bfbfbf;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+      --pill-height: 42px;
+      --radius-pill: 999px;
+      --radius-lg: 18px;
+      --gap: 16px;
+      --transition: 160ms ease;
+      color-scheme: light;
+    }
+
+    body[data-theme="dark"] {
+      --bg: #0f0f0f;
+      --surface: #181818;
+      --text: #f5f5f5;
+      --muted: #aaaaaa;
+      --border: #2a2a2a;
+      --subtle-border: #222222;
+      --hover: #1f1f1f;
+      --active: #262626;
+      --focus: #f1f1f1;
+      --disabled: #3a3a3a;
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .app-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px clamp(16px, 4vw, 32px) 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .icon-inline {
+      width: 24px;
+      height: 24px;
+      color: var(--text);
+    }
+
+    .control-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .pill-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: var(--pill-height);
+      min-width: 44px;
+      padding: 0 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: border-color var(--transition), background-color var(--transition), color var(--transition), box-shadow var(--transition);
+      box-shadow: inset 0 0 0 0 transparent;
+    }
+
+    .pill-button:hover { background: var(--hover); }
+    .pill-button:active { background: var(--active); }
+    .pill-button:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--focus);
+      border-color: var(--focus);
+    }
+    .pill-button:disabled {
+      cursor: not-allowed;
+      color: var(--disabled);
+      border-color: var(--subtle-border);
+      background: var(--hover);
+    }
+
+    .pill-button.is-compact {
+      height: 38px;
+      padding: 0 12px;
+      gap: 6px;
+    }
+
+    .surface {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .breadcrumbs a { color: var(--text); font-weight: 600; }
+    .breadcrumbs .sep { opacity: 0.4; }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 260px;
+      max-width: 480px;
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      height: 40px;
+      padding: 0 14px 0 42px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 14px;
+      width: 100%;
+      transition: border-color var(--transition), box-shadow var(--transition), background-color var(--transition);
+    }
+
+    .search-input:hover { background: var(--hover); border-color: var(--subtle-border); }
+    .search-input:focus-visible {
+      outline: none;
+      border-color: var(--focus);
+      box-shadow: 0 0 0 2px var(--focus);
+    }
+
+    .list-header {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr 0.6fr;
+      gap: 10px;
+      padding: 14px 16px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      border-bottom: 1px solid var(--subtle-border);
+    }
+
+    .sort-button {
+      background: none;
+      border: none;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      padding: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .list-row {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr 0.6fr;
+      gap: 10px;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--subtle-border);
+      transition: background-color var(--transition), border-color var(--transition);
+      min-height: 64px;
+    }
+
+    .list-row:hover { background: var(--hover); }
+
+    .file-name { font-weight: 600; }
+
+    .meta { color: var(--muted); font-size: 14px; }
+
+    .name-cell, .time-cell, .size-cell { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .name-cell { overflow: hidden; }
+    .name-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .file-link { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+
+    .file-badge {
+      border: 1px solid currentColor;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.08em;
+      background: transparent;
+      white-space: nowrap;
+    }
+
+    .file-badge.is-muted { color: var(--muted); }
+
+    .hidden { display: none !important; }
+
+    .footer-note { color: var(--muted); font-size: 13px; text-align: center; }
+
+    .tablet-stack .list-header,
+    .tablet-stack .list-row {
+      grid-template-columns: 1fr;
+      align-items: flex-start;
+    }
+
+    .tablet-stack .time-cell,
+    .tablet-stack .size-cell {
+      justify-content: flex-start;
+      font-size: 13px;
+    }
+
+    @media (max-width: 768px) {
+      .app-shell { padding: 18px 14px 28px; gap: 14px; }
+      .app-header { gap: 10px; }
+      .top-actions { align-items: flex-start; }
+      .search-box { min-width: 0; }
+      .pill-button { width: auto; padding: 0 12px; font-size: 13px; }
+      .list-header, .list-row { padding: 12px; }
+    }
+
+    .preview-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 10;
+    }
+
+    .preview-shell {
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 18px;
+      width: min(960px, 95vw);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .preview-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--subtle-border);
+      gap: 10px;
+    }
+
+    .preview-title {
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .preview-body {
+      padding: 16px;
+      overflow: auto;
+      background: var(--surface);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .preview-body img,
+    .preview-body video,
+    .preview-body audio {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    #previewPlayer {
+      width: 100%;
+      max-width: 1100px;
+      aspect-ratio: 16 / 9;
+      min-height: 320px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .dplayer,
+    .dplayer-video-wrap {
+      height: 100% !important;
+    }
+
+    .dplayer-video-current {
+      object-fit: contain !important;
+    }
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/dplayer/dist/DPlayer.min.css">
+</head>
+<body data-theme="light">
+<div class="app-shell">
+  <header class="app-header">
+    <div class="brand">
+      <svg class="icon-inline" aria-hidden="true"><use xlink:href="#icon-mark"></use></svg>
+      <span>MonoMinimalist</span>
+    </div>
+    <div class="control-group">
+      <button class="pill-button" id="themeToggle" type="button" aria-label="切换日夜模式"></button>
+      <a class="pill-button" id="backButton" href="#" aria-label="返回上级">上一级</a>
+    </div>
+  </header>
+
+  <div class="surface">
+      <div class="top-actions">
+        <div class="breadcrumbs" id="breadcrumbs"></div>
+        <div class="search-box">
+          <span class="search-icon"><svg class="icon-inline" aria-hidden="true"><use xlink:href="#icon-search"></use></svg></span>
+          <input id="searchInput" class="search-input" type="search" placeholder="搜索文件/文件夹" aria-label="搜索" />
+        </div>
+      </div>
+
+    <div id="listContainer" class="list-view-wrapper">
+      <div class="list-header" id="listHeader">
+        <button class="sort-button" data-sort="name" type="button">名称</button>
+        <button class="sort-button" data-sort="date" type="button">时间</button>
+        <button class="sort-button" data-sort="size" type="button">大小</button>
+      </div>
+      <div id="listBody"></div>
+    </div>
+  </div>
+
+  <div class="footer-note">黑白线框极简风 · 支持列表视图、在线预览与日夜模式切换</div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="icon-mark" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="5" width="18" height="14" rx="3" ry="3"></rect>
+      <path d="M7 9h10M7 12h6"></path>
+    </symbol>
+    <symbol id="icon-folder" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 6h6l2 2h10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6z"></path>
+    </symbol>
+    <symbol id="icon-file" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 3h8l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path>
+      <path d="M14 3v5h5"></path>
+    </symbol>
+    <symbol id="icon-image" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
+      <circle cx="9" cy="10" r="1.6"></circle>
+      <path d="M3 16l5-4 4 3 4-3 3 2"></path>
+    </symbol>
+    <symbol id="icon-video" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="5" width="14" height="14" rx="2" ry="2"></rect>
+      <path d="M17 9l4-2v10l-4-2z"></path>
+    </symbol>
+    <symbol id="icon-doc" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 4h9l3 3v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"></path>
+      <path d="M9 13h6M9 9h6M9 17h3"></path>
+    </symbol>
+    <symbol id="icon-zip" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="6" y="3" width="12" height="18" rx="2" ry="2"></rect>
+      <path d="M10 5h2v2h-2zm0 4h2v2h-2zm0 4h2v2h-2z"></path>
+    </symbol>
+    <symbol id="icon-audio" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 7h2l4 2v6l-4 2h-2z"></path>
+      <path d="M8 9v6a2 2 0 1 0 0 4"></path>
+    </symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 18l-6-6 6-6"></path>
+    </symbol>
+    <symbol id="icon-play" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M10 9.5l5 2.5-5 2.5z"></path>
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="6.5"></circle>
+      <path d="M16.5 16.5L20 20"></path>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="previewLayer" class="preview-overlay hidden" role="dialog" aria-modal="true" aria-label="预览">
+  <div class="preview-shell">
+    <div class="preview-head">
+      <div class="preview-title" id="previewTitle"></div>
+      <button class="pill-button" id="previewClose" type="button">关闭</button>
+    </div>
+    <div class="preview-body" id="previewBody"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/dplayer/dist/DPlayer.min.js"></script>
+<script>
+  const RootPath = "{{.RootPath}}";
+  let CurrentPath = "{{.CurrentPath}}";
+  const RawData = "{{.RawData}}";
+  let videoPlayer = null;
+
+  const state = {
+    theme: localStorage.getItem('monominimalist-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+    sortKey: 'name',
+    reverse: false,
+    query: ''
+  };
+
+  const svgIcon = (id) => `<svg class="icon-inline" aria-hidden="true"><use xlink:href="#${id}"></use></svg>`;
+
+  function safeDecode(str) {
+    try {
+      return decodeURIComponent(str);
+    } catch (e) {
+      return str;
+    }
+  }
+
+  function sizeToNumber(size) {
+    if (!size) return 0;
+    const [val, unit] = size.split(' ');
+    const num = parseFloat(val);
+    const map = { B: 0, KB: 10, MB: 20, GB: 30, TB: 40, PB: 50 };
+    return num * Math.pow(2, map[unit] || 0);
+  }
+
+  function badgeFor(name, type) {
+    if (type === 'folder') return { label: 'DIR', icon: 'icon-folder' };
+    const ext = name.includes('.') ? name.split('.').pop().toLowerCase() : '';
+    const groups = [
+      { keys: ['png','jpg','jpeg','gif','bmp','webp','svg'], label: 'IMG', icon: 'icon-image' },
+      { keys: ['mp4','mov','mkv','avi','flv','wmv','webm','m3u8'], label: 'VID', icon: 'icon-video' },
+      { keys: ['mp3','flac','aac','ogg','wav','m4a'], label: 'AUD', icon: 'icon-audio' },
+      { keys: ['pdf'], label: 'PDF', icon: 'icon-doc' },
+      { keys: ['doc','docx','pages','md','txt','rtf'], label: 'DOC', icon: 'icon-doc' },
+      { keys: ['xls','xlsx','csv','numbers'], label: 'XLS', icon: 'icon-doc' },
+      { keys: ['zip','rar','7z','tar','gz','bz2'], label: 'ZIP', icon: 'icon-zip' },
+    ];
+    for (const group of groups) {
+      if (group.keys.includes(ext)) return { label: group.label, icon: group.icon };
+    }
+    return { label: 'FILE', icon: 'icon-file' };
+  }
+
+  function mediaCategory(name) {
+    const ext = name.includes('.') ? name.split('.').pop().toLowerCase() : '';
+    if (['png','jpg','jpeg','gif','bmp','webp','svg'].includes(ext)) return 'image';
+    if (['mp4','mov','mkv','avi','flv','wmv','webm','m3u8'].includes(ext)) return 'video';
+    if (['mp3','flac','aac','ogg','wav','m4a'].includes(ext)) return 'audio';
+    return null;
+  }
+
+  function parseData() {
+    const pageData = JSON.parse(window.atob(RawData));
+    const items = [];
+    for (const key in pageData) {
+      if (key.startsWith('@')) continue;
+      items.push(pageData[key]);
+    }
+    return items;
+  }
+
+  function buildBreadcrumb() {
+    const trail = document.getElementById('breadcrumbs');
+    trail.innerHTML = '';
+    const normalized = CurrentPath === '/' ? '' : CurrentPath;
+    const parts = normalized.replace(/^\//, '').replace(/\/$/, '').split('/').filter(Boolean);
+    const frag = document.createDocumentFragment();
+    const origin = window.location.origin;
+    const rootLink = document.createElement('a');
+    rootLink.href = origin + (RootPath === '/' ? '' : RootPath);
+    rootLink.textContent = '根目录';
+    frag.appendChild(rootLink);
+    let cumulative = RootPath === '/' ? '' : RootPath;
+    parts.forEach((segment, idx) => {
+      const sep = document.createElement('span');
+      sep.className = 'sep';
+      sep.textContent = '/';
+      frag.appendChild(sep);
+      cumulative += '/' + segment;
+      const link = document.createElement('a');
+      link.href = origin + cumulative;
+      link.textContent = segment;
+      frag.appendChild(link);
+    });
+    trail.appendChild(frag);
+    const backHref = parts.length > 0 ? origin + (cumulative.replace(/\/[^/]*$/, '') || '/') : origin + (RootPath === '/' ? '/' : RootPath);
+    document.getElementById('backButton').href = backHref;
+  }
+
+  function comparator(key) {
+    return (a, b) => {
+      if (key === 'size') {
+        return sizeToNumber(a.size || '0 B') - sizeToNumber(b.size || '0 B');
+      }
+      const aVal = (a[key] || '').toString().toLowerCase();
+      const bVal = (b[key] || '').toString().toLowerCase();
+      return aVal.localeCompare(bVal);
+    };
+  }
+
+  function applyTheme() {
+    const theme = state.theme;
+    document.body.setAttribute('data-theme', theme);
+    document.getElementById('themeToggle').textContent = theme === 'dark' ? '切换到 Light' : '切换到 Dark';
+    localStorage.setItem('monominimalist-theme', theme);
+  }
+
+  function filterItems(items) {
+    const q = state.query.trim().toLowerCase();
+    if (!q) return items;
+    return items.filter(item => safeDecode(item.name || '').toLowerCase().includes(q));
+  }
+
+  function renderList(items) {
+    const body = document.getElementById('listBody');
+    body.innerHTML = '';
+    const wrapper = document.getElementById('listContainer');
+    wrapper.classList.toggle('tablet-stack', window.innerWidth <= 900);
+    items.forEach(item => {
+      const name = safeDecode(item.name || '');
+      const type = item['@type'];
+      const { label, icon } = badgeFor(name, type);
+      const row = document.createElement('div');
+      row.className = 'list-row';
+      const normalizedPath = CurrentPath === '/' ? '' : CurrentPath;
+      const href = `${window.location.origin}${normalizedPath}/${encodeURIComponent(name)}`;
+      const previewCapable = mediaCategory(name) && type === 'file';
+      row.innerHTML = `
+        <div class="name-cell">
+          ${svgIcon(icon)}
+          <div class="file-link">
+            <a class="name-text file-name" href="${href}">${name}</a>
+            <span class="file-badge ${type === 'folder' ? 'is-muted' : ''}">${label}</span>
+          </div>
+        </div>
+        <div class="time-cell meta">${item.date || '—'}</div>
+        <div class="size-cell meta">
+          ${type === 'folder' ? '—' : (item.size || '0 B')}
+          ${previewCapable ? `<button class="pill-button is-compact" data-preview="${href}" data-name="${encodeURIComponent(name)}" aria-label="预览">${svgIcon('icon-play')}</button>` : ''}
+        </div>
+      `;
+      body.appendChild(row);
+    });
+  }
+
+  const dataSource = parseData();
+
+  function renderAll() {
+    const sorted = [...dataSource].sort(comparator(state.sortKey));
+    if (state.reverse) sorted.reverse();
+    const filtered = filterItems(sorted);
+    renderList(filtered);
+  }
+
+  function closePreview() {
+    if (videoPlayer) {
+      videoPlayer.destroy();
+      videoPlayer = null;
+    }
+    document.getElementById('previewLayer').classList.add('hidden');
+    document.getElementById('previewBody').innerHTML = '';
+  }
+
+  function openPreview(name, url) {
+    const type = mediaCategory(name);
+    if (!type) return;
+    if (videoPlayer) {
+      videoPlayer.destroy();
+      videoPlayer = null;
+    }
+    const previewBody = document.getElementById('previewBody');
+      const title = document.getElementById('previewTitle');
+      previewBody.innerHTML = '';
+      title.textContent = safeDecode(name);
+      if (type === 'image') {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = name;
+        previewBody.appendChild(img);
+      } else if (type === 'video') {
+        const box = document.createElement('div');
+        box.id = 'previewPlayer';
+        previewBody.appendChild(box);
+        videoPlayer = new DPlayer({
+          container: box,
+          autoplay: true,
+          theme: getComputedStyle(document.body).getPropertyValue('--text'),
+          video: { url, type: 'auto' }
+        });
+      } else if (type === 'audio') {
+        const audio = document.createElement('audio');
+        audio.controls = true;
+        audio.src = url;
+      audio.autoplay = true;
+      previewBody.appendChild(audio);
+    }
+    document.getElementById('previewLayer').classList.remove('hidden');
+  }
+
+  function attachEvents() {
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
+      applyTheme();
+    });
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      state.query = e.target.value || '';
+      renderAll();
+    });
+
+    document.querySelectorAll('#listHeader .sort-button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.sort;
+        state.reverse = state.sortKey === key ? !state.reverse : false;
+        state.sortKey = key;
+        renderAll();
+      });
+    });
+
+    document.getElementById('listBody').addEventListener('click', (e) => {
+      const target = e.target.closest('button[data-preview]');
+      if (target) {
+        e.preventDefault();
+        const url = target.getAttribute('data-preview');
+        const name = decodeURIComponent(target.getAttribute('data-name'));
+        openPreview(name, url);
+      }
+    });
+
+    document.getElementById('previewClose').addEventListener('click', closePreview);
+    document.getElementById('previewLayer').addEventListener('click', (e) => {
+      if (e.target.id === 'previewLayer') closePreview();
+    });
+
+    window.addEventListener('resize', renderAll);
+  }
+
+  (function init() {
+    if (CurrentPath === '/') CurrentPath = '';
+    applyTheme();
+    buildBreadcrumb();
+    renderAll();
+    attachEvents();
+  })();
+</script>
+</body>
+</html>
