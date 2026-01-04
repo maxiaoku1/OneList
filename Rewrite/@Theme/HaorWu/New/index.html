@@ -1,37 +1,791 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, Chrome=1">
-    <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1,viewport-fit=cover">
     <title>CTList - /</title>
-    <link href="//s.pstatp.com/cdn/expire-3-M/mdui/0.4.2/css/mdui.min.css" rel="stylesheet">
-    <link href="//s.pstatp.com/cdn/expire-3-M/??video.js/7.3.0/video-js.min.css,baguettebox.js/1.11.0/baguetteBox.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/artplayer@5.1.1/dist/artplayer.min.css">
     <style>
-    body{background-color:#f2f5fa}.nexmoe-item{margin:15px 0 !important;padding:15px !important;border-radius:5px;background-color:#fff;-webkit-box-shadow:0 .5em 3em rgba(161,177,204,.4);box-shadow:0 .5em 3em rgba(161,177,204,.4);background-color:#fff}.mdui-img-fluid,.mdui-video-fluid{border-radius:5px;border:1px solid #eee}.mdui-list{padding:0}.mdui-list-item{margin:0 !important;border-bottom:1px solid #eee;line-height:2}.mdui-list-item:last-child{margin-bottom:0 !important,}.mdui-toolbar{width:auto}.mdui-appbar .mdui-toolbar{height:56px;font-size:16px}.mdui-toolbar>*{padding:0 6px;margin:0 2px}.mdui-toolbar>.mdui-typo-headline{padding:0 16px 0 0}.mdui-toolbar>i{padding:0}.mdui-toolbar h3.title{padding:0 16px;line-height:30px;border-radius:30px;border:1px solid #eee;opacity:1;background-color:#1e89f2;color:#ffff}.mdui-toolbar>a:hover,a.mdui-typo-headline,a.active{opacity:1}.mdui-list>.th{background-color:initial}.mdui-list-item>a{width:100%;line-height:48px}.mdui-toolbar>a{padding:0 16px;line-height:30px;border-radius:30px;border:1px solid #eee}.mdui-toolbar>a:-child{opacity:1;background-color:#1e89f2;color:#ffff}@media screen and (max-width:980px){.mdui-list-item .mdui-text-right{display:none}.mdui-container{width:100% !important;margin:0}.mdui-toolbar>a:last-child,.mdui-toolbar>.mdui-typo-headline,.mdui-toolbar>i:first-child{display:block}}#main-page{cursor:pointer}.nav-a{text-decoration:none;color:#333}.nav-a:hover{text-decoration:underline}.file{width:100%;display:flex;align-items:center}.file a{color:unset;width:100%}#text-input,#close{display:none}#text-input{width:40%}#playerContainer{position:relative;background-color:#000;display:none;padding:10px}.close-icon{color:#fff}span.overlay{position:fixed;top:0;right:0;bottom:0;left:0;background-color:rgba(0,0,0,.8);z-index:999}.mask{display:block;-webkit-user-select:none;-ms-user-select:none;-webkit-transition:opacity .5s ease;transition:opacity .5s ease;background-color:rgba(0,0,0,.8);position:fixed;overflow:hidden;top:0;left:0;width:100%;height:100%}.video-js{width:100% !important;height:100% !important;position:relative !important}.vjs-big-play-button{margin-top:-130px !important}.video-js .vjs-text-track-display>div>div>div{font-size:24px !important;line-height:36px !important;padding:5px !important;background:transparent !important;text-shadow:1px 1px 2px #000;display:inline-block !important}.video-js .vjs-big-play-button{font-size:2.5em;line-height:2.5em;height:2.5em;width:2.5em;-webkit-border-radius:2.5em;-moz-border-radius:2.5em;border-radius:2.5em;background-color:#73859f;background-color:rgba(115,133,159,.5);border-width:.15em;margin-top:-1.25em !important;margin-left:-1.75em}.vjs-big-play-button .vjs-icon-placeholder{font-size:1.63em}.vjs-loading-spinner{font-size:2.5em;width:2em;height:2em;border-radius:1em;margin-top:-1em;margin-left:-1.5em}.vjs-paused .vjs-big-play-button,.vjs-paused.vjs-has-started .vjs-big-play-button{display:block}.video-js.vjs-playing .vjs-tech{pointer-events:auto}.video-js .vjs-time-control{display:block}.video-js .vjs-remaining-time{display:none}.player-row{text-align:right;border-bottom:1px solid #2b333fb3}.player-title{color:#fff;float:left;line-height:36px;overflow:auto;white-space:normal;text-overflow:ellipsis;width:50vw;text-align:left}.prev-next{display:none}.prev-next>.baguetteBox-button:before{content:"";position:absolute;top:-180px;width:100px;bottom:-180px}.prev-next>#previous-button{left:0 !important;top:calc(40%)}.prev-next>#previous-button:before{left:-50px}.prev-next>#next-button{right:0 !important;top:calc(40%)}.prev-next>#next-button:before{right:-50px}@media screen and (max-width:980px){.player-row{display:none}}
+        :root {
+            --bg: linear-gradient(145deg, #f8f8f8 0%, #ececec 100%);
+            --card: rgba(255, 255, 255, 0.75);
+            --text: #0f0f10;
+            --muted: #555;
+            --accent: #0f0f10;
+            --border: rgba(255, 255, 255, 0.35);
+            --shadow: 0 25px 60px rgba(15, 15, 16, 0.12);
+            --blur: 18px;
+        }
+
+        [data-theme="dark"] {
+            --bg: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.06) 0, transparent 35%),
+            radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.06) 0, transparent 30%),
+            #060607;
+            --card: rgba(14, 14, 16, 0.68);
+            --text: #f5f5f5;
+            --muted: #a6a6ac;
+            --accent: #f5f5f5;
+            --border: rgba(255, 255, 255, 0.08);
+            --shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+            --blur: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', 'PingFang SC', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 24px;
+            transition: background 0.35s ease, color 0.35s ease;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.14), transparent 30%),
+            radial-gradient(circle at 90% 10%, rgba(0, 0, 0, 0.08), transparent 25%),
+            radial-gradient(circle at 50% 80%, rgba(0, 0, 0, 0.06), transparent 30%);
+            z-index: 0;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .glass-card {
+            background: var(--card);
+            backdrop-filter: blur(var(--blur));
+            -webkit-backdrop-filter: blur(var(--blur));
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        header.glass-card {
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            font-size: 20px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.25);
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.25s ease, color 0.25s ease;
+        }
+
+        [data-theme="dark"] .pill {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .pill:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .path {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .breadcrumb {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .crumb {
+            color: inherit;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px dashed var(--border);
+            background: rgba(255, 255, 255, 0.18);
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        [data-theme="dark"] .crumb {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .crumb:hover {
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 240px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--border);
+        }
+
+        [data-theme="dark"] .search-box {
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .search-box input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] .badge {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .list-card {
+            padding: 10px 14px 6px;
+        }
+
+        .list-head, .file-row {
+            display: grid;
+            grid-template-columns: 1fr 120px 90px auto;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 10px;
+        }
+
+        .list-head {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--muted);
+        }
+
+        .list-head button {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+        }
+
+        .file-row {
+            border-radius: 14px;
+            padding-inline: 12px;
+            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            position: relative;
+        }
+
+        .file-row:hover {
+            background: rgba(255, 255, 255, 0.32);
+            transform: translateY(-1px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        [data-theme="dark"] .file-row:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .file-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .file-meta .material-icons-round {
+            font-size: 22px;
+        }
+
+        .file-meta .name {
+            font-weight: 600;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .file-meta a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .time, .size {
+            color: var(--muted);
+            font-size: 13px;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .preview-toggle {
+            justify-self: flex-end;
+            display: none;
+            align-items: center;
+        }
+
+        .file-row:hover .preview-toggle {
+            display: inline-flex;
+        }
+
+        .preview-pill {
+            padding: 6px 10px;
+        }
+
+        .preview-placeholder {
+            justify-self: flex-end;
+        }
+
+        .preview-layer {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .preview-layer.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .preview-card {
+            width: min(1200px, 92vw);
+            height: min(720px, 84vh);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .preview-title {
+            font-weight: 700;
+            font-size: 16px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .preview-body {
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        [data-theme="dark"] .preview-body {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .preview-body img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .preview-body .text-preview {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 12px;
+            padding: 12px;
+            font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+            color: var(--text);
+            white-space: pre-wrap;
+            line-height: 1.55;
+        }
+
+        [data-theme="dark"] .preview-body .text-preview {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .preview-body audio {
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .empty {
+            padding: 30px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        @media (max-width: 780px) {
+            body { padding: 16px; }
+            .list-head, .file-row { grid-template-columns: 1fr; align-items: flex-start; }
+            .time, .size { text-align: left; }
+            .preview-toggle { display: inline-flex; justify-self: flex-start; }
+            .preview-card { height: 90vh; }
+            .toolbar { gap: 8px; }
+        }
     </style>
 </head>
 <body>
-<div class="container mdui-container"><div class="mdui-container-fluid"><div class="mdui-toolbar nexmoe-item nav"><i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue" id="main-page" onclick="goto(rootPath)">home</i><span id="path">/</span><div class="mdui-toolbar-spacer"></div><input type="text" id="text-input" class="mdui-textfield-input" oninput="search(this)" placeholder="请输入关键字"><button type="button" id="close" class="mdui-textfield-close mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">close</i></button><button type="button" id="btn" class="mdui-textfield-icon mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></button></div></div><div class="prev-next"><button type="button" id="previous-button" aria-label="Previous" class="baguetteBox-button"><svg width="44" height="60"><polyline points="30 10 10 30 30 50" stroke="rgba(255,255,255,0.5)" stroke-width="4" stroke-linecap="butt" fill="none" stroke-linejoin="round"></polyline></svg></button><button type="button" id="next-button" aria-label="Next" class="baguetteBox-button"><svg width="44" height="60"><polyline points="14 10 34 30 14 50" stroke="rgba(255,255,255,0.5)" stroke-width="4" stroke-linecap="butt" fill="none" stroke-linejoin="round"></polyline></svg></button></div><div class="mdui-container-fluid"><div class="list-wrapper nexmoe-item"><div class="list-header"><div class="file mdui-list-item th"><span class="name mdui-col-xs-12 mdui-col-sm-7" onclick="view('name')">列表</span><span class="time mdui-col-sm-3 mdui-text-right" onclick="view('date')">时间</span><span class="size mdui-col-sm-2 mdui-text-right" onclick="view('size')">大小</span></div></div><div id="file-list"></div></div></div></div>
-<script src="//s.pstatp.com/cdn/expire-3-M/??mdui/0.4.0/js/mdui.min.js,video.js/7.3.0/video.min.js,video.js/7.3.0/lang/zh-CN.js,baguettebox.js/1.11.0/baguetteBox.min.js"></script>
-<script>
-"use strict";var _$_9ef7=["host","location","{{.RootPath}}","{{.CurrentPath}}","{{.RawData}}","CTList - ","JQ","protocol","https:","http:","/","","atob","parse","@","indexOf","name","video","push","@type","file","folder","href","size","toUpperCase","toLowerCase","localeCompare","file-wrapper","getElementsByClassName","length","removeChild","parentNode","path","getElementById","span","createElement","replace","trim","innerHTML","split","join","appendChild","title","substr","value","toString","innerText","span.mdui-text-truncate","querySelector","children","none","display","style","sort","reverse","file-list","concat","div","folder_open","image_aspect_ratio","//","image","class","gallery","setAttribute","row file-wrapper mdui-list-item mdui-ripple","date"," B","click","preventDefault","after","on","i.mdui-icon.material-icons","find",".gallery","run","#playerContainer","remove","show","html",".player-title","src","attr","dispose","IS_SAFARI","browser","play","catch","then","outerWidth","mask","removeClass",".mdui-loaded",".list-header",".mdui-container-fluid:first-child",".file-wrapper","margin-top","css",".container.mdui-container","hide",".prev-next","unset","addClass","outerHeight","calc(5vh - 10px)","calc(10vh - 30px)","82vw","fixed","10vw",".mdui-loaded.mask","top","calc(45% - 30px)",".prev-next.baguetteBox-button#next-button, .prev-next.baguetteBox-button#previous-button","GET","open","send","readyState","status",".","lastIndexOf","substring","vtt","#textTracks","#previous-button","#next-button","gif","jpeg","jpg","bmp","png","avi","wmv","mkv","mp4","mov","3gp","flv","mpg","rmvb","m3u8","txt","pdf","js","text","doc","docx","ppt","xml","wav","acc","flac","ape","ogg","mp3","test",".(","|",")$","i","music","ondemand_video","music_video","text_fields","insert_drive_file","#text-input","#close","#btn","mouseenter","addEventListener","onload"];let domain=window[_$_9ef7[1]][_$_9ef7[0]],rootPath=_$_9ef7[2],currentPath=_$_9ef7[3],rawData=_$_9ef7[4],title=_$_9ef7[5],$$=mdui[_$_9ef7[6]],protocol=(document[_$_9ef7[1]][_$_9ef7[7]]== _$_9ef7[8])?_$_9ef7[8]:_$_9ef7[9];if(currentPath=== _$_9ef7[10]){currentPath= _$_9ef7[11]};let reverse=false,pageData=JSON[_$_9ef7[13]](window[_$_9ef7[12]](rawData)),pathArray=[],floderArray=[],videoArry=[],fileArray=[],videoIndex=0,player=_$_9ef7[11];for(let item in pageData){if(item[_$_9ef7[15]](_$_9ef7[14])== 0){continue};if(getFileType(safeDecodeURIComponent(escape(pageData[item][_$_9ef7[16]])))== _$_9ef7[17]){videoArry[_$_9ef7[18]](safeDecodeURIComponent(escape(pageData[item][_$_9ef7[16]])))};if(pageData[item][_$_9ef7[19]]== _$_9ef7[20]){fileArray[_$_9ef7[18]](pageData[item])}else {if(pageData[item][_$_9ef7[19]]== _$_9ef7[21]){floderArray[_$_9ef7[18]](pageData[item])}}};function goto(E){window[_$_9ef7[1]][_$_9ef7[22]]= E}function compare(s){if(s=== _$_9ef7[23]){return function(t,u){let v=sizeNum(t[s][_$_9ef7[24]]());let w=sizeNum(u[s][_$_9ef7[24]]());return v- w}}else {return function(t,u){let v=t[s][_$_9ef7[25]]();let w=u[s][_$_9ef7[25]]();return v[_$_9ef7[26]](w)}}}function clear(){let g= new Array(_$_9ef7[27]),q;for(let item in g){let c=document[_$_9ef7[28]](g[item]);for(let h=c[_$_9ef7[29]]- 1;h>= 0;h--){c[h][_$_9ef7[31]][_$_9ef7[30]](c[h])}};let o=document[_$_9ef7[33]](_$_9ef7[32]),r=document[_$_9ef7[35]](_$_9ef7[34]),m=currentPath[_$_9ef7[37]]()[_$_9ef7[36]](/^\//,_$_9ef7[11])[_$_9ef7[36]](/\/$/,_$_9ef7[11]);let l= new Array(_$_9ef7[11]),p=_$_9ef7[11];if(o[_$_9ef7[38]][_$_9ef7[29]]> 0){o[_$_9ef7[38]]= _$_9ef7[11]};if(m!== _$_9ef7[11]){let n=m[_$_9ef7[39]](_$_9ef7[10]),k=_$_9ef7[11];for(let j=0;j< n[_$_9ef7[29]];j++){k+= _$_9ef7[10]+ n[j];if(j=== 0&& rootPath!== _$_9ef7[10]){continue};p= `<a class="nav-a" href="//${window[_$_9ef7[1]][_$_9ef7[0]]}${k}">${n[j]}</a>`;l[_$_9ef7[18]](p)}};r[_$_9ef7[38]]= l[_$_9ef7[40]](_$_9ef7[10]);o[_$_9ef7[41]](r);q= (o[_$_9ef7[38]][_$_9ef7[29]]=== 0)?_$_9ef7[10]:r[_$_9ef7[38]][_$_9ef7[36]](/<[^>]+>/g,_$_9ef7[11]);document[_$_9ef7[42]]+= q[_$_9ef7[43]](1);pathArray= l}function search(c){let O=c[_$_9ef7[44]];if(O=== undefined){return}else {O= O[_$_9ef7[45]]()[_$_9ef7[25]]()};let P=document[_$_9ef7[28]](_$_9ef7[27]);for(let h=0;h< P[_$_9ef7[29]];h++){let M=P[h][_$_9ef7[49]][0][_$_9ef7[48]](_$_9ef7[47])[_$_9ef7[46]];if(M!== undefined&& M[_$_9ef7[29]]> 0){let N=_$_9ef7[11];if(M[_$_9ef7[25]]()[_$_9ef7[15]](O)< 0){N= _$_9ef7[50]};P[h][_$_9ef7[52]][_$_9ef7[51]]= N}}}function sizeNum(a){var e=a.split(" ",2),t=0;switch(e[1]){case"B":t=Math.pow(2,0)*e[0];break;case"KB":t=Math.pow(2,10)*e[0];break;case"MB":t=Math.pow(2,20)*e[0];break;case"GB":t=Math.pow(2,30)*e[0];break;case"TB":t=Math.pow(2,40)*e[0];break;default:t=Math.pow(2,50)*e[0]}return t}function safeDecodeURIComponent(L){let K=L,J;try{while((J= decodeURIComponent(K))!= K){K= J}}catch(e){};return K}function view(Y){floderArray[_$_9ef7[53]](compare(Y));fileArray[_$_9ef7[53]](compare(Y));if(reverse){floderArray[_$_9ef7[54]]();fileArray[_$_9ef7[54]]()};reverse=  !(reverse);clear();let c=document[_$_9ef7[33]](_$_9ef7[55]),W=floderArray[_$_9ef7[56]](fileArray);for(let item in W){let X=document[_$_9ef7[35]](_$_9ef7[57]),y=(W[item][_$_9ef7[19]]== _$_9ef7[21])?_$_9ef7[58]:_$_9ef7[59],G=safeDecodeURIComponent(escape(W[item][_$_9ef7[16]]));let V=protocol+ _$_9ef7[60]+ domain+ currentPath+ _$_9ef7[10]+ G,x=getFileType(G),R=V;if(y== _$_9ef7[59]){y= getFileIcon(x)};if(y=== _$_9ef7[61]){c[_$_9ef7[64]](_$_9ef7[62],_$_9ef7[63])};X[_$_9ef7[64]](_$_9ef7[62],_$_9ef7[65]);X[_$_9ef7[38]]= `
-        <div class="file">
-            <i class="mdui-icon material-icons">${y}</i>
-            <a href="${V}">
-                <span class="name mdui-col-xs-12 mdui-col-sm-7 mdui-text-truncate">${G}</span>
-                <span class="time mdui-col-sm-3 mdui-text-right">${W[item][_$_9ef7[66]]}</span>
-                <span class="size mdui-col-sm-2 mdui-text-right">${(W[item][_$_9ef7[23]])?W[item][_$_9ef7[23]]:0+ _$_9ef7[67]}</span>
-            </a>
-        </div>`;c[_$_9ef7[41]](X);$$(X)[_$_9ef7[73]](_$_9ef7[72])[_$_9ef7[71]](_$_9ef7[68],function(b){b[_$_9ef7[69]]();if(x== _$_9ef7[17]){$$(X)[_$_9ef7[70]](initial());playVideo(R,G)}else {return}},false)};baguetteBox[_$_9ef7[75]](_$_9ef7[74])}function initial(){if($$(_$_9ef7[76])[_$_9ef7[29]]> 0){$$(_$_9ef7[76])[_$_9ef7[77]]()};return `
-    <div id="playerContainer" class="mdui-container-fluid">
-        <div class="player-row">
-            <span class="player-title"></span>
-            <button type="button" id="closevideo" onclick="playerClose()" class="mdui-textfield-close mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons close-icon">close</i></button>
+<div class="page">
+    <header class="glass-card">
+        <div class="header-top">
+            <div class="title">
+                <span class="material-icons-round">all_inclusive</span>
+                <span>HaorWu / New</span>
+            </div>
+            <div class="badge" id="item-count">0 项内容</div>
+            <button class="pill" id="theme-toggle">
+                <span class="material-icons-round">brightness_4</span>
+                <span>日/夜</span>
+            </button>
+            <button class="pill" id="back-button">
+                <span class="material-icons-round">arrow_back</span>
+                返回
+            </button>
         </div>
-        <video id="video" class="video-js vjs-default-skin vjs-16-9 vjs-big-play-centered" controls oncontextmenu="return false;" webkit-playsinline="true" playsinline="true">
-            <track kind="captions" id="textTracks" srclang="zh-CN" label="字幕" default>
-        </video>
-    </div>`}function playVideo(f,G,F= true){$$(_$_9ef7[76])[_$_9ef7[78]]();$$(_$_9ef7[80])[_$_9ef7[79]](G);if(G){videoIndex= videoArry[_$_9ef7[15]](G)};videoMaskShow();$$(_$_9ef7[17])[_$_9ef7[82]](_$_9ef7[81],f);videoVtt(f);if(player&& F){player[_$_9ef7[83]]()};player= videojs(_$_9ef7[17],{html5:{hls:{overrideNative:!videojs[_$_9ef7[85]][_$_9ef7[84]]}},sources:[{src:f}],controlBar:{volumePanel:{inline:false}},fluid:true,playbackRates:[0.5,1,1.5,2]});if(player[_$_9ef7[86]]()!== undefined){(player[_$_9ef7[86]]())[_$_9ef7[88]]((H)=>{})[_$_9ef7[87]]((I)=>{})}}function playerClose(){$$(_$_9ef7[76])[_$_9ef7[77]]();if(window[_$_9ef7[89]]> 980){$$(_$_9ef7[92])[_$_9ef7[91]](_$_9ef7[90]);$$(_$_9ef7[93])[_$_9ef7[78]]();$$(_$_9ef7[94])[_$_9ef7[78]]();$$(_$_9ef7[95])[_$_9ef7[78]]();$$(_$_9ef7[98])[_$_9ef7[97]](_$_9ef7[96],0);$$(_$_9ef7[100])[_$_9ef7[99]]();$$(_$_9ef7[92])[_$_9ef7[97]]({'width':_$_9ef7[101],'position':_$_9ef7[101],'left':_$_9ef7[101],'top':_$_9ef7[101]})}}function videoMaskShow(){if(window[_$_9ef7[89]]> 980){$$(_$_9ef7[92])[_$_9ef7[102]](_$_9ef7[90]);$$(_$_9ef7[93])[_$_9ef7[99]]();$$(_$_9ef7[94])[_$_9ef7[99]]();$$(_$_9ef7[95])[_$_9ef7[99]]();let S;if(window[_$_9ef7[103]]< 820){S= _$_9ef7[104]}else {S= _$_9ef7[105]};$$(_$_9ef7[109])[_$_9ef7[97]]({'width':_$_9ef7[106],'position':_$_9ef7[107],'left':_$_9ef7[108],'top':S});$$(_$_9ef7[112])[_$_9ef7[97]](_$_9ef7[110],_$_9ef7[111])}}function checkVtt(f){if(!f){return false};let d= new XMLHttpRequest();d[_$_9ef7[114]](_$_9ef7[113],f,false);d[_$_9ef7[115]]();if(d[_$_9ef7[116]]== 4){if(d[_$_9ef7[117]]== 200){return true}else {return false}}else {return false}}function videoVtt(f){if(!f){return};let T=f[_$_9ef7[120]](f[_$_9ef7[119]](_$_9ef7[118])+ 1),U=f[_$_9ef7[120]](f,f[_$_9ef7[29]]- T[_$_9ef7[29]])+ _$_9ef7[121];if(checkVtt(U)){$$(_$_9ef7[122])[_$_9ef7[82]](_$_9ef7[81],U)}else {$$(_$_9ef7[122])[_$_9ef7[77]]()}}function videoIndexs(Q){if(Q>= 0){let R=protocol+ _$_9ef7[60]+ domain+ currentPath+ _$_9ef7[10]+ videoArry[Q];playVideo(R,videoArry[Q],false)}}function optShow(){if(videoArry[_$_9ef7[29]]> 1){setTimeout(function(){$$(_$_9ef7[100])[_$_9ef7[78]]()},200);if(videoIndex== 0){$$(_$_9ef7[123])[_$_9ef7[99]]()}else {$$(_$_9ef7[123])[_$_9ef7[78]]()};if(videoIndex== videoArry[_$_9ef7[29]]- 1){$$(_$_9ef7[124])[_$_9ef7[99]]()}else {$$(_$_9ef7[124])[_$_9ef7[78]]()};setTimeout(function(){$$(_$_9ef7[100])[_$_9ef7[99]]()},3000)}}function getFileType(B){if(!B){return false};let z=[_$_9ef7[125],_$_9ef7[126],_$_9ef7[127],_$_9ef7[128],_$_9ef7[129]],D=[_$_9ef7[130],_$_9ef7[131],_$_9ef7[132],_$_9ef7[133],_$_9ef7[134],_$_9ef7[135],_$_9ef7[136],_$_9ef7[137],_$_9ef7[138],_$_9ef7[139]],C=[_$_9ef7[140],_$_9ef7[141],_$_9ef7[97],_$_9ef7[142],_$_9ef7[143],_$_9ef7[144],_$_9ef7[145],_$_9ef7[146],_$_9ef7[147]],A=[_$_9ef7[148],_$_9ef7[149],_$_9ef7[150],_$_9ef7[151],_$_9ef7[152],_$_9ef7[153]];if(RegExp(_$_9ef7[155]+ z[_$_9ef7[40]](_$_9ef7[156])+ _$_9ef7[157],_$_9ef7[158])[_$_9ef7[154]](B[_$_9ef7[25]]())){return _$_9ef7[61]}else {if(RegExp(_$_9ef7[155]+ D[_$_9ef7[40]](_$_9ef7[156])+ _$_9ef7[157],_$_9ef7[158])[_$_9ef7[154]](B[_$_9ef7[25]]())){return _$_9ef7[17]}else {if(RegExp(_$_9ef7[155]+ C[_$_9ef7[40]](_$_9ef7[156])+ _$_9ef7[157],_$_9ef7[158])[_$_9ef7[154]](B[_$_9ef7[25]]())){return _$_9ef7[143]}else {if(RegExp(_$_9ef7[155]+ A[_$_9ef7[40]](_$_9ef7[156])+ _$_9ef7[157],_$_9ef7[158])[_$_9ef7[154]](B[_$_9ef7[25]]())){return _$_9ef7[159]}else {return false}}}}}function getFileIcon(x){let y;switch(x){case _$_9ef7[61]:y= _$_9ef7[61];break;case _$_9ef7[17]:y= _$_9ef7[160];break;case _$_9ef7[159]:y= _$_9ef7[161];break;case _$_9ef7[143]:y= _$_9ef7[162];break;default:y= _$_9ef7[163];break};return y}$$(_$_9ef7[166])[_$_9ef7[71]](_$_9ef7[68],function(a){a[_$_9ef7[69]]();$$(_$_9ef7[164])[_$_9ef7[78]]();$$(_$_9ef7[165])[_$_9ef7[78]]();$$(_$_9ef7[166])[_$_9ef7[99]]()});$$(_$_9ef7[165])[_$_9ef7[71]](_$_9ef7[68],function(a){a[_$_9ef7[69]]();$$(_$_9ef7[164])[_$_9ef7[99]]();$$(_$_9ef7[165])[_$_9ef7[99]]();$$(_$_9ef7[166])[_$_9ef7[78]]()});$$(_$_9ef7[124])[_$_9ef7[71]](_$_9ef7[68],function(a){a[_$_9ef7[69]]();videoIndex+= 1;videoIndexs(videoIndex)});$$(_$_9ef7[123])[_$_9ef7[71]](_$_9ef7[68],function(a){a[_$_9ef7[69]]();videoIndex-= 1;videoIndexs(videoIndex)});document[_$_9ef7[33]](_$_9ef7[55])[_$_9ef7[168]](_$_9ef7[167],function(b){b[_$_9ef7[69]]();let c=$$(_$_9ef7[76]);if(c[_$_9ef7[29]]> 0&& window[_$_9ef7[89]]> 980){optShow()}},false);window[_$_9ef7[169]]= view(_$_9ef7[16])
-</script></body></html>
+        <div class="toolbar">
+            <div class="path">
+                <span class="material-icons-round" style="font-size:18px;">route</span>
+                <div class="breadcrumb" id="breadcrumb"></div>
+            </div>
+            <div class="search-box">
+                <span class="material-icons-round">search</span>
+                <input id="search" type="text" placeholder="搜索文件 / 预览" aria-label="搜索">
+            </div>
+        </div>
+    </header>
+
+    <section class="glass-card list-card">
+        <div class="list-head">
+            <button data-sort="name" type="button">文件 <span class="material-icons-round" aria-hidden="true">swap_vert</span></button>
+            <button data-sort="date" type="button">时间 <span class="material-icons-round" aria-hidden="true">swap_vert</span></button>
+            <button data-sort="size" type="button">大小 <span class="material-icons-round" aria-hidden="true">swap_vert</span></button>
+        </div>
+        <div id="file-list"></div>
+    </section>
+</div>
+
+<div class="preview-layer" id="preview-layer" role="dialog" aria-modal="true">
+    <div class="glass-card preview-card">
+        <div class="preview-header">
+            <div class="preview-title" id="preview-title"></div>
+            <div class="preview-actions">
+                <a class="pill preview-pill" id="open-original" href="#" target="_blank" rel="noreferrer">
+                    <span class="material-icons-round">open_in_new</span>
+                    原始链接
+                </a>
+                <button class="pill preview-pill" id="close-preview" type="button">
+                    <span class="material-icons-round">close</span>
+                    关闭
+                </button>
+            </div>
+        </div>
+        <div class="preview-body" id="preview-body"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/artplayer@5.1.1/dist/artplayer.min.js"></script>
+<script>
+    const rootPath = "{{.RootPath}}";
+    let currentPath = "{{.CurrentPath}}";
+    const rawData = "{{.RawData}}";
+    const pageData = JSON.parse(window.atob(rawData));
+    const protocol = window.location.protocol;
+    const domain = window.location.host;
+
+    if (currentPath === "/") currentPath = "";
+
+    const files = [];
+    const folders = [];
+    const previewLayer = document.getElementById('preview-layer');
+    const previewTitle = document.getElementById('preview-title');
+    const previewBody = document.getElementById('preview-body');
+    const openOriginal = document.getElementById('open-original');
+    const itemCount = document.getElementById('item-count');
+    let art = null;
+    const state = { sortKey: 'name', direction: 'asc', search: '' };
+
+    function decodeName(name) {
+        try { return decodeURIComponent(name); } catch (e) { return name; }
+    }
+
+    for (let key in pageData) {
+        if (key.indexOf('@') === 0) continue;
+        const entry = { ...pageData[key], name: decodeName(pageData[key]['name'] || '') };
+        if (entry['@type'] === 'folder') {
+            folders.push(entry);
+        } else if (entry['@type'] === 'file') {
+            files.push(entry);
+        }
+    }
+
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('haorwu-new-theme', theme);
+    }
+
+    function initTheme() {
+        const saved = localStorage.getItem('haorwu-new-theme');
+        const theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        setTheme(theme);
+    }
+
+    function pathJoin(base, child = '') {
+        const cleanBase = base.replace(/\/+$/, '');
+        const cleanChild = child.replace(/^\/+/, '');
+        return `${cleanBase}/${cleanChild}`.replace(/\/{2,}/g, '/');
+    }
+
+    function buildUrl(name) {
+        const base = currentPath || '/';
+        const href = `${base}${base.endsWith('/') ? '' : '/'}${encodeURIComponent(name)}`;
+        return new URL(href, `${protocol}//${domain}`).href;
+    }
+
+    function sizeToNumber(size) {
+        if (!size) return 0;
+        const [value, unit] = size.split(' ');
+        const n = parseFloat(value) || 0;
+        const map = { B: 0, KB: 10, MB: 20, GB: 30, TB: 40 };
+        return n * Math.pow(2, map[unit] || 0);
+    }
+
+    function getFileType(name) {
+        const ext = (name.split('.').pop() || '').toLowerCase();
+        if (['png','jpg','jpeg','webp','gif','bmp','svg','avif'].includes(ext)) return 'image';
+        if (['mp4','mkv','mov','avi','wmv','flv','m3u8','webm'].includes(ext)) return 'video';
+        if (['mp3','ogg','wav','flac','aac','m4a','ape'].includes(ext)) return 'audio';
+        if (['txt','md','log','json','js','ts','css','html','xml','py','java','go','rs'].includes(ext)) return 'text';
+        if (ext === 'pdf') return 'pdf';
+        return 'other';
+    }
+
+    function iconFor(type, isFolder = false) {
+        if (isFolder) return 'folder_open';
+        const map = { image: 'image', video: 'movie', audio: 'library_music', text: 'description', pdf: 'picture_as_pdf', other: 'insert_drive_file' };
+        return map[type] || 'insert_drive_file';
+    }
+
+    function breadcrumb() {
+        const container = document.getElementById('breadcrumb');
+        container.innerHTML = '';
+        const segments = (currentPath || '').replace(rootPath, '').split('/').filter(Boolean);
+        const base = rootPath === '/' ? '' : rootPath;
+        const home = document.createElement('a');
+        home.className = 'crumb';
+        home.href = pathJoin(base || '/');
+        home.textContent = '根目录';
+        container.appendChild(home);
+        let accumulated = base;
+        segments.forEach((seg) => {
+            accumulated = pathJoin(accumulated || '/', seg);
+            const link = document.createElement('a');
+            link.className = 'crumb';
+            link.href = accumulated;
+            link.textContent = seg;
+            container.appendChild(link);
+        });
+    }
+
+    function renderList() {
+        const list = document.getElementById('file-list');
+        list.innerHTML = '';
+        const dataset = [...folders, ...files];
+        const term = state.search.trim().toLowerCase();
+        let filtered = term ? dataset.filter(item => (item.name || '').toLowerCase().includes(term)) : dataset;
+
+        filtered.sort((a, b) => {
+            const dir = state.direction === 'asc' ? 1 : -1;
+            if (state.sortKey === 'size') {
+                return (sizeToNumber(a.size) - sizeToNumber(b.size)) * dir;
+            }
+            if (state.sortKey === 'date') {
+                return (new Date(a.date || 0) - new Date(b.date || 0)) * dir;
+            }
+            return (a.name || '').toLowerCase().localeCompare((b.name || '').toLowerCase()) * dir;
+        });
+
+        itemCount.textContent = `${filtered.length} 项内容`;
+
+        if (!filtered.length) {
+            const empty = document.createElement('div');
+            empty.className = 'empty';
+            empty.textContent = '这里空空如也，试试切换目录或清空搜索条件。';
+            list.appendChild(empty);
+            return;
+        }
+
+        filtered.forEach(item => {
+            const isFolder = item['@type'] === 'folder';
+            const type = isFolder ? 'folder' : getFileType(item.name);
+            const previewable = isPreviewable(type);
+            const row = document.createElement('div');
+            row.className = 'file-row';
+
+            const meta = document.createElement('div');
+            meta.className = 'file-meta';
+            const icon = document.createElement('span');
+            icon.className = 'material-icons-round';
+            icon.textContent = iconFor(type, isFolder);
+
+            const link = document.createElement('a');
+            link.href = buildUrl(item.name);
+            link.className = 'name';
+            link.textContent = item.name;
+
+            meta.appendChild(icon);
+            meta.appendChild(link);
+
+            const time = document.createElement('div');
+            time.className = 'time';
+            time.textContent = item.date || '';
+
+            const size = document.createElement('div');
+            size.className = 'size';
+            size.textContent = isFolder ? '--' : (item.size || '0 B');
+
+            row.appendChild(meta);
+            row.appendChild(time);
+            row.appendChild(size);
+            if (previewable) {
+                const previewBtn = document.createElement('button');
+                previewBtn.className = 'pill preview-pill preview-toggle';
+                previewBtn.type = 'button';
+                previewBtn.innerHTML = '<span class="material-icons-round">visibility</span>预览';
+                row.appendChild(previewBtn);
+                row.addEventListener('click', (e) => handleOpen(e, item, type));
+                previewBtn.addEventListener('click', (e) => handlePreview(e, item, type));
+            } else {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'preview-placeholder';
+                row.appendChild(placeholder);
+            }
+
+            list.appendChild(row);
+        });
+    }
+
+    function handleOpen(event, item, type) {
+        if (item['@type'] === 'folder') return;
+        if (isPreviewable(type)) {
+            event.preventDefault();
+            event.stopPropagation();
+            handlePreview(event, item, type);
+        }
+    }
+
+    function isPreviewable(type) {
+        return ['image', 'video', 'audio', 'text', 'pdf'].includes(type);
+    }
+
+    function handlePreview(event, item, type) {
+        event.preventDefault();
+        event.stopPropagation();
+        const url = buildUrl(item.name);
+        openOriginal.href = url;
+        previewTitle.textContent = item.name;
+        previewBody.innerHTML = '';
+        destroyArt();
+
+        switch (type) {
+            case 'image':
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = item.name;
+                previewBody.appendChild(img);
+                break;
+            case 'audio':
+                const audioWrap = document.createElement('div');
+                audioWrap.className = 'text-preview';
+                audioWrap.textContent = '音频文件，支持在线播放。';
+                const audio = document.createElement('audio');
+                audio.controls = true;
+                audio.src = url;
+                previewBody.appendChild(audioWrap);
+                previewBody.appendChild(audio);
+                break;
+            case 'video':
+                const playerBox = document.createElement('div');
+                playerBox.id = 'artplayer-container';
+                playerBox.style.width = '100%';
+                playerBox.style.height = '100%';
+                previewBody.appendChild(playerBox);
+                art = new Artplayer({
+                    container: '#artplayer-container',
+                    url,
+                    autoplay: true,
+                    theme: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#ffffff',
+                    autoSize: true,
+                    hotkey: true,
+                    setting: true,
+                    fullscreen: true,
+                    pip: true,
+                });
+                break;
+            case 'text':
+                const textBox = document.createElement('div');
+                textBox.className = 'text-preview';
+                textBox.textContent = '加载中...';
+                previewBody.appendChild(textBox);
+                fetch(url).then(r => r.text()).then(content => {
+                    textBox.textContent = content;
+                }).catch(() => {
+                    textBox.textContent = '无法加载文本预览，请尝试直接打开文件。';
+                });
+                break;
+            case 'pdf':
+                const frame = document.createElement('iframe');
+                frame.src = url;
+                frame.style.width = '100%';
+                frame.style.height = '100%';
+                frame.style.border = 'none';
+                frame.title = item.name;
+                previewBody.appendChild(frame);
+                break;
+            default:
+                window.location.href = url;
+                return;
+        }
+        previewLayer.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function destroyArt() {
+        if (art && typeof art.destroy === 'function') {
+            art.destroy(false);
+            art = null;
+        }
+    }
+
+    function closePreview() {
+        destroyArt();
+        previewLayer.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function parentPath() {
+        const path = currentPath.split('/').filter(Boolean);
+        path.pop();
+        const merged = path.length ? `/${path.join('/')}` : rootPath || '/';
+        return merged || '/';
+    }
+
+    function initEvents() {
+        document.querySelectorAll('.list-head button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.getAttribute('data-sort');
+                if (state.sortKey === key) {
+                    state.direction = state.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    state.sortKey = key;
+                    state.direction = 'asc';
+                }
+                renderList();
+            });
+        });
+
+        document.getElementById('search').addEventListener('input', (e) => {
+            state.search = e.target.value;
+            renderList();
+        });
+
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            setTheme(current === 'dark' ? 'light' : 'dark');
+        });
+
+        document.getElementById('back-button').addEventListener('click', () => {
+            window.location.href = parentPath();
+        });
+
+        previewLayer.addEventListener('click', (e) => {
+            if (e.target === previewLayer) closePreview();
+        });
+
+        document.getElementById('close-preview').addEventListener('click', closePreview);
+    }
+
+    initTheme();
+    breadcrumb();
+    initEvents();
+    renderList();
+</script>
+</body>
+</html>
