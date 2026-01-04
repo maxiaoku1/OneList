@@ -210,7 +210,7 @@
 
         .list-head, .file-row {
             display: grid;
-            grid-template-columns: 1fr 120px 90px;
+            grid-template-columns: 1fr 120px 90px auto;
             align-items: center;
             gap: 10px;
             padding: 12px 10px;
@@ -283,11 +283,9 @@
         }
 
         .preview-toggle {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
+            justify-self: flex-end;
             display: none;
+            align-items: center;
         }
 
         .file-row:hover .preview-toggle {
@@ -394,6 +392,7 @@
             body { padding: 16px; }
             .list-head, .file-row { grid-template-columns: 1fr; align-items: flex-start; }
             .time, .size { text-align: left; }
+            .preview-toggle { display: inline-flex; justify-self: flex-start; }
             .preview-card { height: 90vh; }
             .toolbar { gap: 8px; }
         }
